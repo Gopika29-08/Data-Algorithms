@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct item{
+    int v;
+    int w;
+    float d;
+};
+void input(item items[] ,int size){
+    for(int i=0;i<size;i++){
+        cin>>items[i].v;
+        cin>>items[i].w;
+    }
+}
+bool compare(const item &a,const item &b){
+    return a.d > b.d;
+}
+void bubblesort(item items[], int sizeOfItems){
+    for(int i=0;i<sizeOfItems-1;i++){
+        for(int j=0;j<sizeOfItems-i-1;j++){
+            if(items[j].d < items[j+1].d){
+                swap(items[j],items[j+1]);
+            }
+        }
+    }
+}
+float knapsack(item items[],int sizeOfItems,int w,float &totalweight){
+    for(int i=0;i<sizeOfItems;i++){
+        items[i].d = (float)items[i].v/items[i].w;
+    }
+    bubblesort(items,sizeOfItems);
+    float totalvalue = 0;
+    totalweight=0;
+    for(int i=0;i<sizeOfItems;i++){
+        if(totalweight + items[i].w <= w){
+            totalvalue += items[i].v;
+            totalweight += items[i].w;
+        }
+        else{
+            float wt = w-totalweight;
+            totalvalue += wt*items[i].d;
+            totalweight += wt;
+            break;
+        }
+    }
+    return totalvalue;
+}
+int main(){
+    int w;
+    item items[4];
+    input(items,4);
+    cin>>w;
+    item sorted[4];
+    for(int i=0;i<4;i++)
+      sorted[i] = items[i];
+    float totalweight = 0;
+    float max = knapsack(sorted,4,w,totalweight);
+    cout<<"Values: ";
+    for(int i=0;i<4;i++){
+       cout<<items[i].v<<" ";
+    }
+    cout<<endl;
+    cout<<"Weights: "; 
+    for(int i=0;i<4;i++){
+       cout<<items[i].w<<" ";
+    }
+    cout<<endl;
+    cout<<"Total weight in bag: "<<fixed<<setprecision(2)<<totalweight<<endl;
+    cout<<"Max value for "<<w<<" weight is "<<fixed<<setprecision(2)<<max<<endl;
+    return 0;
+}
+
+
+
+
+
+
