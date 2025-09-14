@@ -1,0 +1,122 @@
+Single File Programming Question
+=============================
+1.Problem Statement
+=============================
+In a futuristic manufacturing plant, two robots perform tasks at different intervals.
+To avoid collisions and synchronize their actions, the system must determine:
+
+The greatest common divisor (GCD) — the interval at which both tasks align perfectly.
+The least common multiple (LCM) — the smallest time unit after which both tasks repeat together.
+
+Implement two separate recursive functions:
+
+int findGCD(int a, int b)
+int findLCM(int a, int b)
+Input format :
+The first line of input contains two positive integers a and b, representing the task intervals of the two robots.
+
+Output format :
+The first line of output prints an integer representing the GCD of a and b.
+
+The second line of output prints an integer representing the LCM of a and b.
+
+Code constraints :
+1 ≤ a, b ≤ 106
+
+Sample test cases :
+Input 1 :
+10 15
+Output 1 :
+5
+30
+
+=============================
+        Program
+=============================
+#include<bits/stdc++.h>
+using namespace std;
+int gcd(int a, int b, int temp){
+    while(b != 0){
+        a = a%b;
+        a = temp;
+    }
+    return a;
+}
+int lcm(int a, int b){
+    return (a*b)/gcd(a,b);
+}
+int main(){
+    int num1,num2;
+    cin>>num1>>num2;
+    cout<<gcd(num1,num2)<<endl;
+    cout<<lcm(num1,num2)<<endl;
+    return 0;
+}
+
+
+
+Single File Programming Question
+==============================
+2. Problem Statement
+==============================
+In a high-security laboratory, a robotic access system grants entry to users based on a numeric passcode.
+For added security, the system only accepts palindromic passcode passcodes that read the same backward as forward.
+
+To verify the passcode, the system needs a function that checks whether the entered number is a palindrome using recursion.
+
+Your task is to implement a recursive function isPalindrome() that:
+
+Takes no arguments.
+Reads an integer N (the passcode) as input.
+Uses recursion to determine whether the number is a palindrome.
+Returns true if it is a palindrome, otherwise returns false.
+Input format :
+The input consists of an integer N, representing the passcode.
+
+Output format :
+The first line of output prints an integer representing the reversed passcode.
+
+The second line of output prints a string representing whether the given passcode is palindrome or not.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ N ≤ 106
+
+Sample test cases :
+Input 1 :
+111
+Output 1 :
+Reversed number: 111
+The number is a palindrome.
+Input 2 :
+1004
+Output 2 :
+Reversed number: 4001
+The number is not a palindrome.
+
+==========================
+       Program
+==========================
+#include<bits/stdc++.h>
+using namespace std;
+int reverseNumber(int n,int rev = 0){
+    if(n == 0)
+        return rev;
+    return reverseNumber(n/10, rev*10+n%10);
+}
+void palindrome(){
+    int n;
+    cin>>n;
+    int reversed = reverseNumber(n);
+    cout<<"Reversed number: "<<reversed<<endl;
+    if(n == reversed){
+        cout<<"The number is a palindrome."<<endl;
+    }else{
+        cout<<"The number is not a palindrome."<<endl;
+    }
+}
+int main(){
+    palindrome();
+    return 0;
+}
