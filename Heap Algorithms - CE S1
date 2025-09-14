@@ -1,0 +1,234 @@
+Single File Programming Question
+===============================
+1.Problem Statement
+===============================
+In a warehouse inventory system, a supervisor must manage the weights of parcels arriving at the facility.
+Each parcel weight is a positive integer. To efficiently prioritize lighter parcels, 
+the supervisor uses a Min Heap to store the weights. Additionally, the supervisor must calculate the 
+average weight of all parcels and display it with two decimal precision.
+Write a program to assist the supervisor with the following tasks:
+
+Accept an integer n, representing the total number of parcels.
+For each parcel, process its weight. If the weight is a positive integer, add it to the Min Heap and update the total weight sum.
+Display the contents of the Min Heap after all valid weights have been added.
+Calculate and display the average weight of the parcels, formatted to two decimal places. If no valid weights are provided, output "No valid weight".
+Input format :
+The first line contains an integer n, representing the number of parcels.
+
+The second line contains n space-separated integers, representing the weights of the parcels.
+
+Output format :
+The first line prints the elements of the Min Heap, separated by spaces.
+
+The second line displays the average weight of the parcels as a double value, formatted to two decimal places.
+
+If no valid weights are provided, output "No valid weight".
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 10
+
+1 ≤ parcel weights ≤ 50
+
+Sample test cases :
+Input 1 :
+5
+3 9 2 6 8
+Output 1 :
+2 6 3 9 8 
+5.60
+Input 2 :
+6
+25 15 17 -32 -23 5
+Output 2 :
+5 15 17 25 
+15.50
+Input 3 :
+4
+-2 -3 -4 -5
+Output 3 :
+No valid weight
+
+==============================
+        Program
+==============================
+
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int& a,int& b){
+    int temp=a;
+    a=b;
+    b=temp;
+}
+void minHeapify(int arr[],int size,int i){
+    int small = i;
+    int l = 2*i+1;
+    int r = 2*i+2;
+    if(l<size && arr[l]<arr[small])
+        small = l;
+    if(r<size && arr[r]<arr[small])
+        small = r;
+    if(small != i){
+        swap(arr[i],arr[small]);
+        minHeapify(arr,size,small);
+    }
+}
+void insertIntoMinheap(int arr[],int &size,int value){
+    arr[size] = value;
+    int i = size;
+    size++;
+    while(i>0 && arr[(i-1)/2] > arr[i]){
+        swap(arr[i],arr[(i-1)/2]);
+        i = (i-1)/2;
+    }
+}
+void convertHeapify(int arr[],int size){
+    for(int i=size/2-1;i>=0;i--){
+        minHeapify(arr,size,i);
+    }
+}
+void display(int arr[],int n){
+    if(n == 0){
+        cout<<"Heap is empty"<<endl;
+    }
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" "<<endl;
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[10];
+    int size = 0;
+    double total = 0;
+    for(int i=0;i<n;i++){
+        int value;
+        cin>>value;
+        if(value > 0){
+            insertIntoMinheap(arr,size,value);
+            total += value;
+        }
+    }
+    convertHeapify(arr,size);
+    if(size == 0){
+        cout<<"No valid weight"<<endl;
+    }
+    else{
+     for(int i=0;i<size;i++){
+        cout<<arr[i]<<" ";
+     }
+     cout<<endl;
+     double avg = total/size;
+     cout<<fixed<<setprecision(2)<<avg;
+    }
+}
+
+
+Single File Programming Question
+=======================
+ 2. Problem Statement
+=======================
+Emma is designing a task scheduling system that prioritizes tasks using a Min Heap. The system must:
+
+Build a Min Heap based on user-provided task priorities.
+Calculate twice the priority of the root task.
+Remove all tasks with priorities less than twice the root task’s priority.
+Display the remaining tasks while ensuring the Min Heap property is preserved (Level order traversal).
+Input format :
+The first line contains an integer n, representing the number of tasks prioritized in the Min Heap.
+
+The second line contains n space-separated integers, representing the priority levels of the tasks to be added to the Min Heap.
+
+Output format :
+The output is a single line containing the remaining task priorities in the Min Heap after removing tasks with priorities less than twice the root task’s priority, separated by a space.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 20
+
+1 ≤ priority values ≤ 1000
+
+Sample test cases :
+Input 1 :
+7
+4 8 6 15 12 10 14
+Output 1 :
+8 10 12 15 14 
+Input 2 :
+4
+2 4 3 6
+Output 2 :
+4 6 
+=============================
+           Program
+=============================
+
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int& a,int& b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+void minHeapify(int arr[],int size,int i){
+    int small = i;
+    int l = 2*i+1;
+    int r = 2*i+2;
+    if(l<size && arr[l] <arr[small])
+    small = l;
+    if(r<size && arr[r] <arr[small])
+    small = r;
+    if(small != i){
+        swap(arr[i],arr[small]);
+        minHeapify(arr,size,small);
+    }
+}
+void insertIntoMinheap(int arr[], int &size, int value){
+    arr[size] = value;
+    int i = size;
+    size++;
+    while(i>0 && arr[(i-1)/2] > arr[i]){
+        swap(arr[i], arr[(i-1)/2]);
+        i = (i-1)/2;
+    }
+}
+void DeleteLessThanTwiceRoot(int arr[] ,int &n){
+    if(n == 0){
+        return;
+    }
+    int root = 2*arr[0];
+    int j = 0;
+    for(int i=0;i<n;i++){
+        if(arr[i] >= root){
+            arr[j] = arr[i];
+            j++;
+        }
+    }
+    n = j;
+    for(int i=(n-1)/2;i>=0;i--){
+        minHeapify(arr,n,i);
+    }
+}
+void display(int arr[], int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
+int main(){
+    int arr[20];
+    int n;
+    cin>>n;
+    int size = 0;
+    for(int i=0;i<n;i++){
+        int value;
+        cin>>value;
+        insertIntoMinheap(arr,size,value);
+    }
+    DeleteLessThanTwiceRoot(arr,size);
+    display(arr,size);
+    return 0;
+}
+
