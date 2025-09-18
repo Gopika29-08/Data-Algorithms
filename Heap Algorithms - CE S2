@@ -1,0 +1,214 @@
+Single File Programming Question
+==================================
+       1.Problem Statement
+==================================
+A treasure hunter is organizing precious gems in a sequence inspired by the Fibonacci pattern.
+The size of the first gem is 2 carats, the second gem is 3 carats, and each subsequent gem's size
+is the sum of the sizes of the two previous gems. To ensure the most valuable gem is always accessible,
+the hunter uses a Max Heap, where the largest gem size is always at the top.
+
+Write a program that, given an integer n (number of gems), computes the size of each gem in the sequence, 
+inserts it into the Max Heap, and displays the Max Heap arrangement after each insertion.
+
+Input format :
+The input consists of a single integer n, representing the number of gems.
+
+Output format :
+For each gem inserted, display a line in the format:
+
+Insert <gem_size>: <current_heap>
+
+Here, <gem_size> is the size of the gem being inserted, and <current_heap> is the list of gem sizes
+in Max Heap order after the insertion.
+
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ n ≤ 10
+
+Sample test cases :
+Input 1 :
+5
+Output 1 :
+Insert 2: 2 
+Insert 3: 3 2 
+Insert 5: 5 2 3 
+Insert 8: 8 5 3 2 
+Insert 13: 13 8 3 2 5 
+Input 2 :
+3
+Output 2 :
+Insert 2: 2 
+Insert 3: 3 2 
+Insert 5: 5 2 3 
+Input 3 :
+1
+Output 3 :
+Insert 2: 2 
+
+===============================
+          Program
+===============================
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int &a,int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+void maxHeapify(int arr[],int size, int i){
+    int largest = i;
+    int l = 2*i+1;
+    int r = 2*i+2;
+    if(l<size && arr[l] > arr[largest])
+        largest = l;
+    if(r<size && arr[r] > arr[largest])
+        largest = r;
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        maxHeapify(arr,size,largest);
+    }
+}
+void insertIntoMaxheap(int arr[],int &size,int value){
+    arr[size] = value;
+    int i = size;
+    size++;
+    while(i>0 && arr[(i-1)/2] < arr[i]){
+        swap(arr[i],arr[(i-1)/2]);
+        i=(i-1)/2;
+    }
+}
+void convertIntoMaxheap(int arr[],int size){
+    for(int i=size/2-1;i>=0;i--)
+        maxHeapify(arr,size,i);
+}
+void printHeap(int arr[],int size){
+    for(int i=0;i<size;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[100];
+    int size = 0;
+    vector<int>gems;
+    if(n>=1)
+        gems.push_back(2);
+    if(n>=2)
+        gems.push_back(3);
+    for(int i=2;i<n;i++){
+        gems.push_back(gems[i-1]+gems[i-2]);
+    }
+    for(int i=0;i<n;i++){
+        insertIntoMaxheap(arr,size,gems[i]);
+        cout<<"Insert "<<gems[i]<<": ";
+        printHeap(arr,size);
+    }
+    return 0;
+}
+
+Single File Programming Question
+Problem Statement
+
+Olivia is working on a project where she needs to manage a list of unique employee IDs assigned to her team members.
+She decided to implement a Max Heap data structure to manage and retrieve these IDs based on their values efficiently.
+
+This allows her to quickly access the employee with the highest ID. After inserting all IDs from 1 to a given 
+maximum value, she wants to display the IDs in the heap structure and calculate the total sum of all IDs stored in the heap.
+
+Help Olivia write a program to achieve this functionality.
+
+Input format :
+The input consists of a single integer n, which represents the maximum ID that will be inserted into the Max Heap.
+
+Output format :
+The first output displays the elements in the Max Heap in a single line, separated by spaces: <heap_elements>
+
+where <heap_elements> are the IDs in the Max Heap displayed in heap order.
+
+
+Then, the second output is the total sum of all IDs in the Max Heap: <total_sum>
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ n ≤ 10
+
+Sample test cases :
+Input 1 :
+3
+Output 1 :
+3 1 2 
+6
+Input 2 :
+5
+Output 2 :
+5 4 2 1 3 
+15
+
+===============================
+         Program
+===============================
+#include<bits/stdc++.h>
+using namespace std;
+void swap (int &a,int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+void maxHeapify(int arr[], int size,int i){
+    int largest = i;
+    int l = 2*i+1;
+    int r = 2*i+2;
+    if(l<size && arr[l] > arr[largest])
+        largest = l;
+    if(r<size && arr[r] > arr[largest])
+        largest = r;
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        maxHeapify(arr,size,largest);
+    }
+}
+void insertIntoMaxheap(int arr[], int &size ,int value){
+    arr[size] = value;
+    int i = size;
+    size++;
+    while(i>0 && arr[(i-1)/2] < arr[i]){
+        swap(arr[i],arr[(i-1)/2]);
+        i = (i-1)/2;
+    }
+}
+void convertIntoMaxheap(int arr[],int size){
+    for(int i = size/2-1;i>=0;i--)
+       maxHeapify(arr,size,i);
+}
+int calculateHeapSum(int arr[], int size){
+    int sum = 0;
+    for(int i=0;i<size;i++)
+        sum+=arr[i];
+    return sum;
+}
+int main(){
+    int arr[100];
+    int n = 0;
+    int max_value;
+    cin>>max_value;
+    for(int i=1;i<=max_value;i++){
+        insertIntoMaxheap(arr,n,i);
+    }
+    convertIntoMaxheap(arr,n);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    int totalSum = calculateHeapSum(arr,n);
+    cout<<totalSum;
+    return 0;
+}
