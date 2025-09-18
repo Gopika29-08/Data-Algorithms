@@ -1,0 +1,161 @@
+Single File Programming Question
+====================================
+        1.Problem Statement
+====================================
+Sunita is developing a secure communication system where patterns in a message might be hidden in
+reverse form to avoid detection. Your task is to check how many times the reverse of a given
+pattern occurs in a message string using the Boyer-Moore algorithm.
+
+Input format :
+The first line of input contains a string representing the message.
+
+The second line of input contains a string representing the pattern to search in reverse.
+
+Output format :
+The output prints an integer representing the number of times the reverse of the pattern appears in the given message.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ Length of text ≤ 104
+
+1 ≤ Length of pattern ≤ 100
+
+All characters are lowercase English letters
+
+Sample test cases :
+Input 1 :
+desserts are often stressed over
+stressed
+Output 1 :
+1
+Input 2 :
+deliver reviled love
+like
+Output 2 :
+0
+
+================================
+        Program
+================================
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+        string text,pattern;
+        getline(cin,text);
+        getline(cin,pattern);
+        reverse(pattern.begin(),pattern.end());
+        int n=text.size();
+        int m=pattern.size();
+        int bad[256];
+        for(int i=0;i<256;i++){
+            bad[i]=-1;
+        }
+        for(int i=0;i<m;i++){
+            bad[(int)pattern[i]] = i;
+        }
+        int index = 0;
+        int count = 0;
+        while(index <= (n-m)){
+            int j = m-1;
+            while(j>=0 && text[j+index] == pattern[j]){
+                j--;
+            }
+            if(j<0){
+                count++;
+                if(index+m < n){
+                    index += m-bad[(int)text[index+m]];
+                }else{
+                    index+=1;
+                }
+            }
+            else{
+                index+=max(1,j-bad[text[index+j]]);
+            }
+        }
+        cout<<count<<endl;
+        return 0;
+}
+
+Single File Programming Question
+================================
+    1.Problem Statement
+================================
+Jinu is working on a project where he needs to efficiently search for a pattern within a given text. 
+He wants to implement a program that can count the occurrences of a pattern within the provided text using the Boyer-Moore algorithm.
+
+Write a program to help Jinu implement this pattern-searching functionality. The program should take a text string 
+and a pattern string as input, and it should output the count of occurrences of the pattern within the text.
+
+Input format :
+The first line of input contains a text string, text, consisting of printable ASCII characters.
+
+The second line of input contains a pattern string, pattern, consisting of printable ASCII characters.
+
+Output format :
+The output prints a single integer representing the count of occurrences of the pattern within the given text.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+The length of text will not exceed 100 characters.
+
+The length of pattern will not exceed 100 characters.
+
+The input string must be case-sensitive.
+
+Sample test cases :
+Input 1 :
+ababababa
+ab
+Output 1 :
+4
+Input 2 :
+Hello, how are you doing? How is everything going?
+How
+Output 2 :
+1
+
+==============================
+       Program
+==============================
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+        string text,pattern;
+        getline(cin,text);
+        getline(cin,pattern);
+        int n= text.size();
+        int m= pattern.size();
+        int bad[256];
+        for(int i=0;i<256;i++){
+            bad[i] = -1;
+        }
+        for(int i=0;i<m;i++){
+            bad[(int)pattern[i]] = i;
+        }
+        int index = 0;
+        int count = 0;
+        while(index <= (n-m)){
+            int j=m-1;
+            while(j>=0 && text[j+index] == pattern[j]){
+                j--;
+            }
+            if(j<0){
+                count++;
+                if(index+m < n){
+                    index+=m-bad[(int)text[index+m]];
+                }
+                else{
+                    index+=1;
+                }
+            }
+            else{
+                index+=max(1,j-bad[text[index+j]]);
+            }
+        }
+    cout<<count<<endl;
+    return 0;
+}
