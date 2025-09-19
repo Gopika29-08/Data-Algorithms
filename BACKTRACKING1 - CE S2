@@ -1,0 +1,187 @@
+Single File Programming Question
+============================
+    1.Problem Statement
+============================
+You are organizing a charity fundraising event where people can donate money in fixed denominations. 
+You are given a total target amount of N that needs to be collected in various donation combinations.
+
+Your task is to find all unique sets of donation combinations that exactly sum up to N. Each combination
+can include repeated denominations (like someone donating ₹1 multiple times), but the order doesn't 
+matter — for example, [1, 2, 1] is considered the same as [1, 1, 2] and should be counted only once.
+
+To ensure fairness and clarity, every combination should be:
+
+Represented in non-decreasing order (e.g., [1, 1, 2] instead of [2, 1, 1])
+
+
+Printed in lexicographically increasing order (sorted as if in a dictionary)
+
+You are to use backtracking to explore all possible valid combinations.
+
+Input format :
+The input consists of a single integer, n, which represents the number to be broken down.
+
+Output format :
+The output consists of a list of lists, where each inner list represents a possible breakdown of the given number.
+
+Each breakdown is represented as a list of integers that add up to the given number.
+
+The breakdowns are printed in lexicographic order.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+In this scenario, the given test cases will fall under the following constraints:
+
+1 ≤ N ≤ 25
+
+Sample test cases :
+Input 1 :
+1
+Output 1 :
+[[1]]
+Input 2 :
+4
+Output 2 :
+[[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2], [4]]
+Input 3 :
+3
+Output 3 :
+[[1, 1, 1], [1, 2], [3]]
+
+==================================
+          Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+//bool not used because in bool if it is false,we cant access it again
+//in this program we have to access the elements again,so bool not used.
+void findCombination(int n,int start,vector<int> &current,vector<vector<int>> &result){
+    if(n==0){
+        result.push_back(current);
+        return;
+    }
+    for(int i=start;i<=n;i++){
+        current.push_back(i);
+        findCombination(n-i,i,current,result);
+        current.pop_back();
+    }
+}
+void printResult(const vector<vector<int>> &result){
+    cout<<"[";
+    for(size_t i=0;i<result.size();++i){
+        cout<<"[";
+        for(size_t j=0;j<result[i].size();++j){
+            cout<<result[i][j];
+            if(j!=result[i].size()-1)
+                cout<<", ";
+        }
+        cout<<"]";
+        if(i!=result.size()-1)
+            cout<<", ";
+    }
+    cout<<"]"<<endl;
+}
+int main(){
+    int n;
+    cin>>n;
+    vector<int>current;
+    vector<vector<int>> result;
+    findCombination(n,1,current,result);
+    printResult(result);
+    return 0;
+}
+
+Single File Programming Question
+=================================
+       2.Problem Statement
+=================================
+
+Imagine you're helping a friend plan gift packages with a total budget of N. Your task is to find all
+unique ways to spend the entire budget on different combinations of gift prices, ensuring no combination 
+is repeated by rearranging the prices.
+
+Note:
+
+By unique it means that no matter that no other composition can be expressed as a permutation of the
+generated composition. For eg. [1,2,1] and [1, 1, 2] are not unique.
+You need to print all combinations in non-decreasing order for eg. [1, 2, 1] or [1,1,2] will be printed as [1,1,2].
+The order of printing all the combinations should be printed in lexicographical order.
+
+Use backtracking to solve the given problem.
+
+Input format :
+The input consists of a single integer, n, which represents the number to be broken down.
+
+Output format :
+The output consists of a list of lists, where each inner list represents a possible breakdown of the given number.
+
+Each breakdown is represented as a list of integers that add up to the given number.
+
+The breakdowns are printed in lexicographic order.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+In this scenario, the given test cases will fall under the following constraints:
+
+1 ≤ N ≤ 25
+
+Sample test cases :
+Input 1 :
+1
+Output 1 :
+[[1]]
+Input 2 :
+4
+Output 2 :
+[[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2], [4]]
+Input 3 :
+3
+Output 3 :
+[[1, 1, 1], [1, 2], [3]]
+
+===================================
+         Program
+===================================
+#include<bits/stdc++.h>
+using namespace std;
+void findCombinations(int n,int start,vector<int> &current, vector<vector<int>>&result){
+    if(n==0){
+        result.push_back(current);
+        return;
+    }
+    for(int i=start;i<=n;i++){
+        current.push_back(i);
+        findCombinations(n-i,i,current,result);
+        current.pop_back();
+    }
+}
+void printResult(const vector<vector<int>> &result){
+    cout<<"[";
+    for(size_t i=0;i<result.size();++i){
+        cout<<"[";
+        for(size_t j=0;j<result[i].size();++j){
+            cout<<result[i][j];
+            if(j!=result[i].size()-1)
+                cout<<", ";
+        }
+        cout<<"]";
+        if(i!=result.size()-1)
+        cout<<", ";
+    }
+    cout<<"]"<<endl;
+}
+int main(){
+    int n;
+    cin>>n;
+    vector<int>current;
+    vector<vector<int>>result;
+    findCombinations(n,1,current,result);
+    printResult(result);
+    return 0;
+}
