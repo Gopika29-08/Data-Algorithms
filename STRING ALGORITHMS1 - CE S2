@@ -1,0 +1,220 @@
+Single File Programming Question
+=================================
+    1.Problem Statement﻿
+=================================
+Alice found a mysterious text while wandering in Wonderland. She is curious to know how many times a given word appears in the text. 
+
+Your task is to help Alice count the occurrences of the given word in the text using the Rabin-Karp algorithm.
+
+Input format :
+The first line contains a string N, representing the intercepted text.
+
+The second line contains a string M, representing the word Alice wants to count.
+
+Both N and M consist only of lowercase and uppercase English letters ('a' to 'z', 'A' to 'Z') and spaces.
+
+Output format :
+The output displays a single integer representing the number of times M appears as a substring in N.
+
+
+Refer to the sample output for the formatting specifications.﻿
+
+Code constraints :
+1 ≤ N.length ≤ 500
+
+1 ≤ M.length ≤ N.length
+
+Both N and M contain only English letters (A-Z, a-z) and spaces.
+
+Sample test cases :
+Input 1 :
+hello hello world hello
+hello
+Output 1 :
+3
+Input 2 :
+ababababa
+aba
+Output 2 :
+4
+Input 3 :
+abcdefg
+xyz
+Output 3 :
+0
+
+=================================
+          Program
+=================================
+#include<iostream>
+#include<string>
+#include<cstring>
+#define prime 101
+#define maxchar 256
+using namespace std;
+long long computeHash(const char *str, int len){
+    long long hash = 0;
+    long long power = 1;
+    for(int i=0;i<len;i++){
+        hash+=(*(str+i))*power;
+        power*=prime;
+    }
+    return hash;
+}
+int rabinkarp(const char *text, const char *pattern){
+    int textlen = strlen(text);
+    
+    int pattlen = strlen(pattern);
+    
+    if(pattlen > textlen)
+        return 0;
+    int count = 0;
+    long long texthash = computeHash(text,pattlen);
+    long long patthash = computeHash(pattern,pattlen);
+    long long power = 1;
+    for(int i=0;i<pattlen-1;i++){
+        power*=prime;
+    }
+    for(int i=0;i<=textlen-pattlen;i++){
+       if(texthash == patthash){
+           bool match = true;
+           for(int j=0;j<pattlen;j++){
+               if(text[i+j]!= pattern[j]){
+                    match = false;
+                    break;
+               }
+           }
+           if(match == true){
+               count++; 
+           }
+       }
+        if(i<textlen-pattlen){
+            texthash = (texthash-text[i])/prime+(text[i+pattlen])*power;
+        }
+    }
+    return count;
+}
+int main(){
+    char text[1000];
+    char pattern[100];
+    cin.getline(text,1000);
+    cin.getline(pattern,100);
+    int count = rabinkarp(text,pattern);
+    cout<<count<<endl;
+    return 0;
+}
+
+Single File Programming Question
+================================
+      1.Problem Statement﻿
+================================
+Sherlock Holmes intercepted an encrypted message that contained a hidden pattern.
+He suspects that this pattern appears multiple times in the message, possibly overlapping. 
+
+Your task is to help Sherlock find all occurrences of the pattern within the given message.
+
+Input format :
+The first line contains a string N representing the intercepted message.
+
+The second line contains a string M representing the pattern to search for in the message.
+
+Both strings consist only of lowercase English letters (a to z).
+
+Output format :
+The output displays a list of starting indices (0-based) where the pattern occurs in the message,
+including overlapping occurrences. If the pattern does not appear in the message, return -1.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ N.length ≤ 500
+
+1 ≤ M.length ≤ N.length
+
+Sample test cases :
+Input 1 :
+aaaaa
+aa
+Output 1 :
+0 1 2 3 
+Input 2 :
+abcdef
+ef
+Output 2 :
+4 
+Input 3 :
+abcdef
+gh
+Output 3 :
+-1
+
+
+=================================
+            Program
+=================================
+#include<iostream>
+#include<cstring>
+#include<string>
+#define prime 101
+using namespace std;
+long long computeHash(const char *str, int len){
+    long long hash = 0;
+    long long power = 1;
+    for(int i=0;i<len;i++){
+        hash+=(*(str+i))*power;
+        power*=prime;
+    }
+    return hash;
+}
+void rabinkarp(const char *text, const char *pattern){
+    int textlen = strlen(text);
+    int pattlen = strlen(pattern);
+    if(pattlen > textlen){
+        cout<<-1<<endl;
+        return;
+    }
+    long long texthash = computeHash(text,pattlen);
+    long long patthash = computeHash(pattern,pattlen);
+    
+    long long power =1;
+    for(int i=0;i<pattlen-1;i++){
+        power*=prime;
+    }
+    bool found = false;
+    for(int i=0;i<=textlen-pattlen;i++){
+        if(texthash == patthash){
+            bool match = true;
+            for(int j=0;j<pattlen;j++){
+                if(text[i+j]!=pattern[j]){
+                    match = false;
+                    break;
+                }
+            }
+            if(match == true){
+                cout<<i<<" ";
+                found = true;
+            }
+        }
+        if(i<textlen-pattlen){
+            texthash = (texthash - text[i])/prime + (text[i+pattlen])*power;
+        }
+       
+    }
+    if(found == false){
+        cout<<"-1";
+    }
+     cout<<endl; 
+}
+int main(){
+    char text[1000];
+    char pattern[100];
+    
+    cin.getline(text,1000);
+    cin.getline(pattern,100);
+    rabinkarp(text,pattern);
+    return 0;
+}
+
+
+
+
