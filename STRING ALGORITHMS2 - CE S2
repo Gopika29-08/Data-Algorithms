@@ -1,0 +1,225 @@
+Single File Programming Question
+================================
+    1.Problem Statement
+================================
+Aria is working on a text analysis tool that processes user feedback messages from a mobile application. 
+She noticed that users sometimes use palindromic words or phrases to express emotion, emphasis, 
+or creativity - especially when they type fast or informally.
+
+To better understand this behavior, Aria's task is to identify the longest palindromic substring in each of 
+the feedback messages collected. If there are multiple palindromic substrings of the same maximum length,
+she prefers the one that appears first in the message (i.e., the one with the smallest starting index).
+
+Your job is to help Aria by writing a program that takes multiple feedback messages as input and finds
+the longest palindromic substring in each using Manacher’s Algorithm.
+
+
+Example
+
+Input:
+
+2
+
+abacd
+
+abbcd
+
+
+Output:
+
+aba
+
+bb
+
+
+Explanation:
+
+For the first test case, string = "abacd". Then our answer will be "aba". "aba" is the longest palindromic substring in ‘STR’.
+
+For the second test case, string == "abbcd". Then our answer will be "bb". "bb" is the longest palindromic substring in ‘STR’.
+
+Input format :
+The first line contains an integer, T which denotes the number of test cases containing an input string.
+
+The next T lines of the input consist of the strings.
+
+Output format :
+The output displays the longest palindromic substring in the given strings in a separate line.
+
+
+
+Refer to the sample input and output for format specifications.
+
+Code constraints :
+1 ≤ T ≤ 10
+
+0 ≤ Length of the strings ≤100
+
+The strings contain only lowercase letters.
+
+Sample test cases :
+Input 1 :
+2
+abaca
+abbcd
+Output 1 :
+aba
+bb
+
+=============================
+          Program
+=============================
+#include<bits/stdc++.h>
+using namespace std;
+string arrange(const string &str){
+    if(str.empty()){
+        return "^$";
+    }
+    string res = "^";
+    for(char c:str){
+        res+="#";
+        res+=c;
+    }
+    res+="#$";
+    return res;
+}
+string LongestPalindrome(const string &s){
+    string t = arrange(s);
+    int n = t.size();
+    vector<int>p(n,0);
+    int center = 0;
+    int right = 0;
+    for(int i=1;i<n-1;i++){
+        int mirror = 2*center-i;
+        if(i<right){
+            p[i] = min(right-i,p[mirror]);
+        }
+        while(t[i+(1+p[i])]==t[i-(1+p[i])]){
+            p[i]++;
+        }
+        if(i+p[i] > right){
+            center = i;
+            right = i+p[i];
+        }
+    }
+    int maxLength = 0;
+    int centerIndex = 0;
+    for(int i=1;i<n-1;i++){
+        if(p[i]>maxLength){
+            maxLength=p[i];
+            centerIndex = i;
+        }
+    }
+    int start = (centerIndex-maxLength)/2;
+    return s.substr(start,maxLength);
+}
+int main(){
+    int T;
+    cin>>T;
+    while(T--){
+       string str1,str2;
+       cin>>str1>>str2;
+       string s1 = LongestPalindrome(str1);
+       string s2 = LongestPalindrome(str2);
+       cout<<s1<<endl;
+       cout<<s2<<endl;
+    }
+}
+
+Single File Programming Question
+================================
+      2.Problem Statement
+================================
+Dr. Nila is working on a smart energy meter that continuously logs voltage readings. She has observed
+that sometimes, due to power fluctuations or interference, the sensor readings form symmetric 
+patterns - sequences that read the same forward and backward.
+
+To identify such phenomena quickly and efficiently, Dr. Nila wants to find the longest palindromic subsequence in a list of readings.
+
+Since performance is critical, she decides to use Manacher’s Algorithm to find the longest palindromic substring in a
+string of digits (where each digit represents a reading). Help her implement this solution.
+
+Input format :
+The first line of input contains a string s made up of digits (0-9), representing voltage readings.
+
+Output format :
+The output displays a string representing the longest palindromic substring of the given numeric string.
+
+
+﻿Refer to the sample output for formatting specifications.
+
+Code constraints :
+0 ≤ Length of the strings ≤ 50
+
+The input string contains only digits.
+
+If there are multiple longest palindromic substrings of the same length, return the one that appears first.
+
+Sample test cases :
+Input 1 :
+1000001
+Output 1 :
+1000001
+Input 2 :
+98765433215678
+Output 2 :
+33
+Input 3 :
+111222333
+Output 3 :
+111
+
+===================================
+          Program
+===================================
+#include<bits/stdc++.h>
+using namespace std;
+string arrange(const string &str){
+    if(str.empty()){
+        return "^$";
+    }
+    string res = "^";
+    for(char c:str){
+        res+="#";
+        res+=c;
+    }
+    res+="#$";
+    return res;
+}
+string LongestPalindrome(const string &s){
+    string t =arrange(s);
+    int n=t.size();
+    vector<int>p(n,0);
+    int center = 0;
+    int right = 0;
+    for(int i=1;i<n-1;i++){
+        int mirror = 2*center-i;
+        if(i<right){
+            p[i]=min(right-i,p[mirror]);
+        }
+        while(t[i+(1+p[i])]==t[i-(1+p[i])]){
+            p[i]++;
+        }
+        if(i+p[i] > right){
+            center = i;
+            right = i+p[i];
+        }
+    }
+    int maxLength = 0;
+    int centerIndex=0;
+    for(int i=1;i<n-1;i++){
+        if(p[i]>maxLength){
+            maxLength=p[i];
+            centerIndex = i;
+        }
+    }
+    int start = (centerIndex-maxLength)/2;
+    return s.substr(start,maxLength);
+}
+int main(){
+    string str;
+    getline(cin,str);
+    string s1 = LongestPalindrome(str);
+    cout<<s1<<endl;
+    return 0;
+}
