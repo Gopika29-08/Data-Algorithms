@@ -1,0 +1,176 @@
+Single File Programming Question
+==================================
+      1.Problem Statement 
+==================================
+
+
+You are given a string S of length N and a string P of length M. Your task is to find the number
+of occurrences of P in S in linear time. Use the Z algorithm to solve the problem.
+
+For Example: If S = "ababa", and P = "ab", then "ab" occurs twice in "ababa".
+
+Note: The string only consists of lowercase English alphabets.
+
+Input format :
+The first line of input contains T, the number of test cases.
+
+The first line of each test case contains two integers N and M, the length of strings S and P respectively.
+
+The second line of each test case contains the string S.
+
+The third line of each test case contains the string P.
+
+Output format :
+The output displays the integer denoting the number of occurrences of P in S in separate lines for each testcase.
+
+Code constraints :
+1 <= T <= 100
+
+1 <= N, M <= 1000
+
+Sample test cases :
+Input 1 :
+2
+7 2
+ababaab
+ab
+4 1
+abab
+a
+Output 1 :
+3
+2
+
+==================================
+          Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> zFunction(string str){
+    int n= str.length();
+    vector<int> z(n);
+    int l=0,r=0;
+    for(int i=1;i<n;i++){
+        if(i<=r){
+            int k = i-l;
+            z[i] = min(r-i+1,z[k]);
+        }
+        while(i+z[i]<n && str[z[i]]==str[i+z[i]]){
+            z[i]++;
+        }
+        if(i+z[i]-1 > r){
+            l=r;
+            r=i+z[i]-1;
+        }
+    }
+    return z;
+}
+int countOccurences(string S, string P){
+    string combined  = P+"$"+S;
+    vector<int> z =zFunction(combined);
+    int count =0;
+    int M = P.length();
+    for(int i=0;i<z.size();i++){
+        if(z[i]==M)
+           count++;
+    }
+    return count;
+}
+int main(){
+    int T;
+    cin>>T;
+    while(T--){
+        int N,M;
+        cin>>N>>M;
+        string S,P;
+        cin>>S>>P;
+        cout<<countOccurences(S,P)<<endl;
+    }
+    return 0;
+}
+
+Single File Programming Question
+=====================================
+         2.Problem statement
+=====================================
+Z algorithm (Linear time pattern searching Algorithm)
+
+Write a program to implement a string search algorithm called the Z algorithm. The search method takes
+two string arguments, text, and pattern, and finds all occurrences of the pattern in the text using the Z algorithm.
+The Z algorithm preprocesses the pattern and text to construct an array Z that stores the length of the 
+longest substring starting from each position that matches the pattern. The method then iterates through the
+Z array to find all indices where the length of the matching substring equals the length of the pattern.
+The program takes text and pattern input using the Scanner class.
+
+Input format :
+The first input consists of a string.
+
+The second input consists of the string pattern to search
+
+Output format :
+The output displays the pattern.
+
+Refer to the sample input and output for format specifications.
+
+Code constraints :
+The given test cases fall under the following specifications:
+
+1≤length of string≤100
+
+1≤length of pattern≤100
+
+Sample test cases :
+Input 1 :
+Geeks for Geeks
+Geek
+Output 1 :
+Pattern found at index 0
+Pattern found at index 10
+Input 2 :
+hello world, hello universe
+hello
+Output 2 :
+Pattern found at index 0
+Pattern found at index 13
+
+====================================
+          Program
+====================================
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> zFunction(string str){
+    int n = str.length();
+    vector<int> z(n);
+    int l=0,r=0;
+    for(int i=1;i<n;i++){
+        if(i<=r){
+            int k = i-l;
+            z[i] = min(r-i+1, z[k]);
+        }
+        while(i+z[i]<n && str[z[i]]==str[i+z[i]]){
+            z[i]++;
+        }
+        if(i+z[i]-1 > r){
+            l = i;
+            r = i+z[i]-1;
+        }
+    }
+    return z;
+}
+void searchPattern(string txt, string pat){
+    string combined = pat+"$"+txt;
+    vector<int> z = zFunction(combined);
+    int patlen = pat.length();
+    for(int i=0;i<z.size();i++){
+        if(z[i] == patlen){
+            cout<<"Pattern found at index "<<(i-patlen-1)<<endl;
+        }
+    }
+}
+int main(){
+    string txt,pat;
+    getline(cin,txt);
+    getline(cin,pat);
+    searchPattern(txt,pat);
+    return 0;
+}
