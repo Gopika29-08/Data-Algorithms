@@ -1,0 +1,481 @@
+Single File Programming Question
+===============================
+     1.Problem Statement
+===============================
+Anjali is working on a system that organizes customer orders based on their priority levels
+using a Min-Heap. Each order has a priority value, and Anjali wants to know how many orders
+have a priority lower than a specific threshold. She is given an array of customer orders,
+and her task is to create a Min-Heap from this array and then count how many orders have a priority value less than the given threshold.
+Help Anjali by implementing this system.
+
+Input format :
+The first line contains an integer n, representing the number of customer orders.
+The second line contains n space-separated integers representing the priority values of the orders.
+The third line contains an integer threshold, which is the value used to count how many orders have a lower priority than this value.
+
+Output format :
+The first line should display the elements of the Min-Heap in ascending order.
+The second line should display the count of elements in the Min-Heap that have a priority lower than the specified threshold.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+1 ≤ n ≤ 10
+1 ≤ arr[i] ≤ 100
+1 ≤ threshold ≤ 100
+
+Sample test cases :
+Input 1 :
+5
+4 3 1 2 7
+3
+Output 1 :
+1 2 4 3 7 
+2
+Input 2 :
+7
+20 15 12 25 10 5 30
+18
+Output 2 :
+5 10 12 25 15 20 30 
+4
+Input 3 :
+8
+1 3 5 7 9 11 13 15
+5
+Output 3 :
+1 3 5 7 9 11 13 15 
+2
+
+
+==============================
+        Program
+==============================
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int &a,int &b){
+    int temp = a;
+    a=b;
+    b=temp;
+}
+void minHeapify(int arr[],int size,int i){
+    int small=i;
+    int l=2*i+1;
+    int r=2*i+2;
+    if(l<size && arr[l]<arr[small])
+        small = l;
+    if(r<size && arr[r]<arr[small])
+        small = r;
+    if(small!=i){
+        swap(arr[i],arr[small]);
+        minHeapify(arr,size,small);
+    }
+}
+
+void convertHeapify(int arr[],int size){
+    for(int i=size/2-1;i>=0;i--){
+        minHeapify(arr,size,i);
+    }
+}
+int main(){
+    int arr[20];
+    int n;
+    cin>>n;
+    int size = 0;
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int threshold;
+    cin>>threshold;
+    convertHeapify(arr,n);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    int count=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]<threshold){
+            count++;
+        }
+    }
+    cout<<count;
+    return 0;
+}
+
+Single File Programming Question
+================================
+      2.Problem Statement
+================================
+John is organizing a coding competition and wants to track participants' scores dynamically as they
+are entered. He decides to use a max-heap to maintain the order of scores, ensuring the highest scores
+are always at the top. John also wants to print the top three scores at any time to showcase the leaderboard.
+Help John by writing a program that:
+
+Dynamically inserts scores into a max-heap as they are entered.
+Prints the max-heap in its array form after all scores have been inserted.
+Prints the top three scores in descending order (or fewer if there are not enough scores).
+Input format :
+The first line contains an integer N — the number of scores.
+The second line contains N space-separated integers, where each integer score represents a participant's score.
+
+Output format :
+The first line contains the elements of the max-heap in array form after all scores have been inserted, separated by spaces.
+The second line contains the top three scores in descending order, separated by spaces.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases will fall under the following constraints:
+
+1 ≤ N ≤ 20
+
+1 ≤ scores ≤ 1000
+
+Sample test cases :
+Input 1 :
+5
+3 1 4 2 5
+Output 1 :
+5 4 3 1 2 
+5 4 3 
+Input 2 :
+3
+10 20 30
+Output 2 :
+30 10 20 
+30 10 20 
+
+================================
+          Program
+================================
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int &a,int &b){
+    int temp =a;
+    a=b;
+    b=temp;
+}
+void maxHeapify(int arr[],int size,int i){
+    int largest = i;
+    int l=2*i+1;
+    int r=2*i+2;
+    if(l<size && arr[l] >arr[largest])
+        largest = l;
+    if(r<size && arr[r] > arr[largest])
+        largest=r;
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        maxHeapify(arr,size,largest);
+    }
+}
+void insertIntoMaxheap(int arr[],int &size,int value){
+    arr[size]=value;
+    int i=size;
+    size++;
+    while(i>0 && arr[(i-1)/2] < arr[i]){
+        swap(arr[i],arr[(i-1)/2]);
+        i=(i-1)/2;
+    }
+}
+void convertIntoMaxheap(int arr[],int size){
+    for(int i= size/2-1;i>=0;i--)
+        maxHeapify(arr,size,i);
+}
+int main(){
+    int arr[100];
+    int size=0;
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        int val;
+        cin>>val;
+        insertIntoMaxheap(arr,size,val);
+    }
+    for(int i=0;i<size;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    for(int i=0;i<min(3,size);i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    return 0;
+}
+
+Single File Programming Question
+================================
+     3.Problem Statement
+================================
+You are working with a charity organization that receives a stream of donations from different donors.
+Your task is to develop a program that finds the Kth largest donation amount received so far. 
+To achieve this, you decide to implement the heap sort approach.
+
+Write a program that takes the number of donations, the donation amounts, and an integer K as inputs.
+The program should use the max-heap sort approach to find and output the Kth largest donation amount from the array of donations.
+
+Input format :
+The first line of input consists of an integer n, representing the number of donations.
+The second line consists of n space-separated integers, representing the donation amounts, each donation amount is a positive integer.
+The third line consists of integer K, representing the Kth largest donation amount to find.
+
+Output format :
+If the value of K is invalid (K > n or K <= 0), output "Invalid K value."
+Otherwise, output a single line containing the Kth largest donation amount.
+Refer to the sample output for the exact format.
+
+Code constraints :
+The given test cases fall under the following constraints:
+1 ≤ n ≤ 100
+1 ≤ donation amount ≤ 10,000
+1 ≤ K ≤ n
+
+Sample test cases :
+Input 1 :
+5
+50 30 70 10 90
+5
+Output 1 :
+The 5th largest donation amount is: 10
+Input 2 :
+7
+15 25 10 40 30 20 5
+4
+Output 2 :
+The 4th largest donation amount is: 20
+Input 3 :
+6
+15 25 10 40 30 20 
+7
+Output 3 :
+Invalid K value.
+
+=================================
+           Program
+=================================
+#include<bits/stdc++.h>
+using namespace std;
+void maxHeapify(int arr[],int n,int i){
+    int largest = i;
+    int l=2*i+1;
+    int r = 2*i+2;
+    if(l<n && arr[l] >arr[largest])
+        largest = l;
+    if(r<n && arr[r] >arr[largest])
+        largest = r;
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        maxHeapify(arr,n,largest);
+    }
+}
+void heapSort(int arr[],int n){
+    for(int i=n/2-1;i>=0;i--)
+        maxHeapify(arr,n,i);
+    for(int i=n-1;i>=0;i--){
+        swap(arr[0],arr[i]);
+        maxHeapify(arr,i,0);
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[100];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int k;
+    cin>>k;
+    if(k<=0 || k>n){
+        cout<<"Invalid K value.";
+        return 0;
+    }
+    heapSort(arr,n);
+    cout<<"The "<<k<<"th largest donation amount is: "<<arr[n-k];
+    return 0;
+}
+
+
+Single File Programming Question
+==============================
+   4.Problem Statement
+==============================
+Noah is designing a system to manage and analyze a Min Heap of numerical data. The system allows
+users to input a set of integers, which are added to the Min Heap.
+After all values have been inserted, the program will:
+
+Display the elements of the Min Heap.
+Calculate and display the cubes of each element in the Min Heap.
+Input format :
+The first line contains an integer n, representing the number of integers to insert into the Min Heap.
+The second line contains n space-separated integers, representing the values to be inserted.
+
+Output format :
+The first line displays the elements of the Min Heap in the order they appear.
+The second line displays the cubes of these elements, separated by spaces.
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 10
+
+1 ≤ values ≤ 50
+
+Sample test cases :
+Input 1 :
+5
+3 9 2 6 8
+Output 1 :
+2 6 3 9 8 
+8 216 27 729 512 
+Input 2 :
+8
+25 15 17 32 23 5 12 8
+Output 2 :
+5 8 12 23 25 17 15 32 
+125 512 1728 12167 15625 4913 3375 32768
+
+=================================
+          Program
+=================================
+#include<bits/stdc++.h>
+using namespace std;
+void swap(int &a,int &b){
+    int temp = a;
+    a= b;
+    b=temp;
+}
+void minHeapify(int arr[],int size,int i){
+    int small=i;
+    int l=2*i+1;
+    int r=2*i+2;
+    if(l<size && arr[l]<arr[small])
+        l=small;
+    if(r<size && arr[r]<arr[small])
+        r=small;
+    if(small!=i){
+        swap(arr[i],arr[(i-1)/2]);
+        minHeapify(arr,size,small);
+    }
+}
+void insertIntoMinheap(int arr[],int &size,int value){
+    arr[size]=value;
+    int i=size;
+    size++;
+    while(i>0 && arr[(i-1)/2] > arr[i]){
+        swap(arr[i],arr[(i-1)/2]);
+        i=(i-1)/2;
+    }
+}
+void convertHeapify(int arr[],int size){
+    for(int i=size/2-1;i>=0;i--){
+        minHeapify(arr,size,i);
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[100];
+    int size=0;
+    for(int i=0;i<n;i++){
+        int val;
+        cin>>val;
+        insertIntoMinheap(arr,size,val);
+    }
+    convertHeapify(arr,size);
+    for(int i=0;i<size;i++){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    for(int i=0;i<size;i++){
+        cout<<arr[i]*arr[i]*arr[i]<<" ";
+    }
+    cout<<endl;
+    return 0;
+}
+
+
+Single File Programming Question
+================================
+      5.Problem Statement
+================================
+A warehouse manager is responsible for managing shipments that arrive with unique tracking numbers.
+To streamline the processing, the manager wants to identify the Kth largest tracking number efficiently.
+Implement a program that takes a list of tracking numbers as input and finds the Kth largest tracking number using the heap sort algorithm.
+
+Input format :
+The first line contains an integer N, representing the number of tracking numbers.
+The second line contains N space-separated integers, each representing a tracking number.
+The third line contains an integer K, representing the desired position of the Kth largest tracking number.
+
+Output format :
+If K is invalid (greater than N or less than or equal to 0), print "Invalid K value."
+Otherwise, print a single line containing the Kth largest tracking number.
+
+Refer to the sample output for the exact format.
+
+Code constraints :
+The given test cases fall under the following constraints:
+The number of tracking numbers(N) is at most 105.
+tracking numbers are positive integers, each having at most 9 digits.
+
+The value of K (1 ≤ K ≤ N) represents the position of the desired largest tracking numbers.
+
+Sample test cases :
+Input 1 :
+5
+1234 5678 9012 3456 7890
+4
+Output 1 :
+The 4th largest ISBN number is: 3456
+Input 2 :
+9
+1111 2222 3333 4444 5555 6666 7777 8888 9999
+10
+Output 2 :
+Invalid K value.
+
+===============================
+        Program
+===============================
+#include<bits/stdc++.h>
+using namespace std;
+void maxHeapify(int arr[],int n,int i){
+    int largest = i;
+    int l=2*i+1;
+    int r=2*i+2;
+    if(l<n && arr[l]>arr[largest])
+        largest =l;
+    if(r<n && arr[r]>arr[largest])
+        largest =r;
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        maxHeapify(arr,n,largest);
+    }
+}
+void heapSort(int arr[],int n){
+    for(int i=n/2-1;i>=0;i--)
+        maxHeapify(arr,n,i);
+    for(int i=n-1;i>=0;i--){
+        swap(arr[0],arr[i]);
+        maxHeapify(arr,i,0);
+    }
+}
+int main(){
+    int n;
+    cin>>n;
+    int arr[10000];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    int k;
+    cin>>k;
+    if(k<=0 ||k >n){
+        cout<<"Invalid K value.";
+        return 0;
+    }
+    heapSort(arr,n);
+    cout<<"The "<<k<<"th largest ISBN number is: "<<arr[n-k];
+    return 0;
+}
+
+
+
