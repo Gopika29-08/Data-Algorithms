@@ -1,0 +1,356 @@
+Single File Programming Question
+================================
+     1.Problem Statement
+================================
+Jessica is managing her monthly budget and wants to calculate her final savings after adjusting her expenses.
+For the first month, she plans to spend 1.5 times her budget; in the second month, she expects to spend 
+2.6 times her budget, and for the third month, she will only spend 10% of her budget. 
+Help her determine her final savings based on these adjustments.
+
+Formula: Final Savings = Spend Month 1 + (Spend Month 2 * Spend Month 3)
+
+where,
+
+Spend Month 1 = Month 1 Budget * 1.5
+Spend Month 2 = Month 2 Budget * 2.6
+Spend Month 3 = Month 3 Budget * 0.1
+Function prototype: float calculate_final_savings(float month1, float month2, float month3)
+
+Input format :
+The first line of input consists of a float month 1, representing the budget for the first month.
+
+The second line consists of a float month 2, representing the budget for the second month.
+
+The third line consists of a float month 3, representing the budget for the third month.
+
+Output format :
+The output prints a float value representing the final savings, rounded off to one decimal place.
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1.0 ≤ budget of each month ≤ 1500.0
+
+Sample test cases :
+Input 1 :
+10.0
+20.0
+5.0
+Output 1 :
+41.0
+Input 2 :
+2.0
+4.0
+1.0
+Output 2 :
+4.0
+
+==================================
+            Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+float calculate_final_savings(float m1, float m2, float m3){
+    if(m1 == 0 && m2 ==0 && m3==0)
+        return 0;
+    
+    if(m1!=0 && m2!=0 && m3!=0){
+        float s1 = m1*1.5;
+        float s2 = m2*2.6;
+        float s3 = m3*0.1;
+        return s1+(s2*s3);
+    }
+
+}
+int main(){
+    float m1,m2,m3;
+    cin>>m1>>m2>>m3;
+    cout<<fixed<<setprecision(1)<<calculate_final_savings(m1,m2,m3)<<endl;
+    return 0;
+}
+
+Single File Programming Question
+==============================
+     2.Problem Statement
+==============================
+David is building a triangular garden and wants to adjust the lengths of the three sides of
+the fence. The longest side will be shortened by 10%, while the shortest side will be extended
+by 5 meters. He needs to calculate the total adjusted difference between the longest and shortest sides after these modifications. 
+Help him determine the adjusted total length difference.
+
+Formula: Adjusted Total Length Difference = (Longest Side - Shortest Side) + (Adjusted Longest Side - Adjusted Shortest Side)
+
+where,
+
+Adjusted Longest Side = Longest Side * 0.9
+Adjusted Shortest Side = Shortest Side + 5
+Function prototype: adjust_fence_length(float a, float b, float c) 
+
+Input format :
+The first line of input consists of a float a, representing the length of the first side of the fence.
+
+The second line consists of a float b, representing the length of the second side of the fence.
+
+The third line consists of a float c, representing the length of the third side of the fence.
+
+Output format :
+The output prints a float value representing the adjusted total length difference, rounded to one decimal place.
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1.0 ≤ a, b, c ≤ 500.0
+
+Sample test cases :
+Input 1 :
+10.0
+15.0
+20.0
+Output 1 :
+13.0
+Input 2 :
+8.0
+12.0
+10.0
+Output 2 :
+1.8
+
+==============================
+         Program
+==============================
+#include<bits/stdc++.h>
+using namespace std;
+float adjust_fence_length(float a,float b,float c){
+    float l = max(a,max(b,c));
+    float s = min(a,min(b,c));
+    float adjLong = l*0.9f;
+    float adjShort = s+5.0f;
+    
+    float adjust_fence_length_diff = (l-s)+(adjLong-adjShort);
+    return adjust_fence_length_diff;
+}
+int main(){
+    float a,b,c;
+    cin>>a>>b>>c;
+    float result = adjust_fence_length(a,b,c);
+    cout<<fixed<<setprecision(1)<<result<<endl;
+    return 0;
+}
+
+Single File Programming Question
+===============================
+      3.Problem Statement
+===============================
+Kishore loves mathematics and is curious about the sum of natural numbers within a given range.
+He wants to calculate the sum of all natural numbers from 'start' to 'end', inclusive. 
+Help him write a program to find this sum efficiently using recursion.
+
+Write a program that takes two integers, 'start' and 'end', as input and calculates
+the sum of all natural numbers from 'start' to 'end', inclusive.
+
+Input format :
+The input consists of two integers, 'start' and 'end', separated by a line.
+
+Output format :
+The output prints a single integer, which represents the sum of all natural numbers from 'start' to 'end' in the format:
+
+"Sum of natural numbers from <<start value>> to <<end value>> = <<sum>>"
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 <= start <= 103
+
+1 <= end <= 103
+
+Sample test cases :
+Input 1 :
+1
+10
+Output 1 :
+Sum of natural numbers from 1 to 10 = 55
+Input 2 :
+15
+20
+Output 2 :
+Sum of natural numbers from 15 to 20 = 105
+
+============================
+         Program
+============================
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int start,end;
+    cin>>start>>end;
+    int sum=0;
+    for(int i=start;i<=end;i++){
+        sum+=i;
+    }
+    cout<<"Sum of natural numbers from "<<start<<" to "<<end<<" = "<<sum<<endl;
+    return 0;
+}
+
+Single File Programming Question
+=================================
+      2.Problem Statement﻿
+=================================
+Dharun and Ram are learning about special types of numbers, and Alice introduces Bob to the concept of "duck numbers."
+She explains that a duck number is a positive number that contains at least one zero but should not start with zero.
+To determine if a number(n) is a duck number, Bob decides to use recursion in the process.
+
+Input format :
+The input consists of an integer, n.
+
+Output format :
+The output displays whether the given input value is a duck number or not in the format:
+<<value>> is a duck number. - If the input number is a duck number,
+<<value>> is not a duck number. - Otherwise
+
+Code constraints :
+1 ≤ n ≤ 103
+
+Sample test cases :
+Input 1 :
+102
+Output 1 :
+102 is a duck number.
+Input 2 :
+033
+Output 2 :
+33 is not a duck number.
+Input 3 :
+0
+Output 3 :
+0 is not a duck number.
+Input 4 :
+10030
+Output 4 :
+10030 is a duck number.
+
+=============================
+          Program
+=============================
+#include<bits/stdc++.h>
+using namespace std;
+bool duckNum(int n){
+    if(n==0){
+        return false;
+    }
+    if(n%10==0){
+        return true;
+    }
+    return duckNum(n/10);
+}
+int main(){
+    int a;
+    cin>>a;
+    string num = to_string(a);
+    if(duckNum(a) && num[0]!='0'){
+        cout<<a<<" is a duck number."<<endl;
+    }
+    else{
+        cout<<a<<" is not a duck number."<<endl;
+    }
+    return 0;
+}
+
+Single File Programming Question
+===============================
+      2.Problem Statement
+================================
+Liam wants to send a secret message to his friend using a simple encryption technique called
+the Caesar cipher. He plans to shift each letter in his message by a specific number of positions in the alphabet. 
+Help him encrypt his message by applying the given shift value.
+Function prototype: string encrypt_message(string message, int shift)
+
+Example:
+
+Input:
+
+hello world
+3
+
+Output:
+
+Encrypted message: khoor zruog
+
+Explanation:
+s= "hello world"'
+k=3
+
+h → k (h → i → j → k)
+e → h (e → f → g → h)
+l → o (l → m → n → o)
+l → o l → m → n → o)
+o → r (o → p → q → r)
+space → Remains a space
+
+w → z (w → x → y → z)
+o → r (o → p → q → r)
+r → u (r → s → t → u)
+l → o (l → m → n → o)
+d → g (d → e → f → g)
+
+Input format :
+The first line of input consists of a string s, representing the message to be encrypted.
+
+The second line consists of an integer k, representing the shift value for encryption.
+
+Output format :
+The output prints "Encrypted message: " followed by the encrypted message.
+
+﻿Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ length of s ≤ 100
+
+0 ≤ k ≤ 50
+
+s contains only lowercase English letters and spaces
+
+Sample test cases :
+Input 1 :
+hello world
+3
+Output 1 :
+Encrypted message: khoor zruog
+Input 2 :
+xyzabc
+7
+Output 2 :
+Encrypted message: efghij
+
+=============================
+          Program
+=============================
+#include<bits/stdc++.h>
+using namespace std;
+string encrypt_msg(string msg,int shift){
+    string enc =" ";
+    for(char c : msg){
+        if(c==' ')
+            enc=enc+" ";
+        else{
+            if((int)c+shift > 122)
+                enc+=(char)((int)c+shift-26);
+            else
+                enc+=(char)((int)c+shift);
+        }
+    }
+    return enc;
+}
+int main(){
+    string s;
+    int k;
+    getline(cin,s);
+    cin>>k;
+    cout<<"Encrypted message:"<<encrypt_msg(s,k)<<endl;
+    return 0;
+}
