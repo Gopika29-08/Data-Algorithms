@@ -1,0 +1,157 @@
+Single File Programming Question
+==================================
+        1.Problem Statement
+==================================
+For a given array with N elements, you need to find the length of the longest subsequence from the array such
+that all the elements of the subsequence are sorted in strictly increasing order using dynamic programming.
+
+A strictly increasing sequence is when each term in the sequence is larger than the preceding term.
+Example: [1,2,3,4] is a strictly increasing array, while [2,1,4,3] is not.
+
+Input format :
+The first line of the input contains an integer 'N', representing the size of the array.
+
+The second line of the input contains 'N' space-separated integers, representing the elements of the array.
+
+Output format :
+The output prints the length of the longest increasing subsequence.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+1 ≤ N ≤ 337
+
+1 ≤ Elements ≤ 105
+
+Sample test cases :
+Input 1 :
+6
+5 4 11 1 16 8
+Output 1 :
+Length of the longest increasing subsequence: 3
+Input 2 :
+3
+1 2 2
+Output 2 :
+Length of the longest increasing subsequence: 2
+
+===============================
+           Program
+===============================
+#include<bits/stdc++.h>
+using namespace std;
+int LIS(int nums[],int n){
+    int dp[10000];
+    memset(dp,0,sizeof(dp));
+    for(int i=0;i<n;i++){
+        dp[i]=1;
+        for(int j=0;j<i;j++){
+            if(nums[i] > nums[j] && dp[i]<dp[j]+1){
+                dp[i]=dp[j]+1;
+            }
+        }
+    }
+    int max=0;
+    for(int i=0;i<n;i++){
+        if(dp[i] > max){
+            max=dp[i];
+        }
+    }
+    return max;
+}
+int main(){
+    int n;
+    cin>>n;
+    int nums[n];
+    for(int i=0;i<n;i++){
+        cin>>nums[i];
+    }
+    int res = LIS(nums,n);
+    cout<<"Length of the longest increasing subsequence: "<<res<<endl;
+    return 0;
+}
+
+Single File Programming Question
+===============================
+      2.Problem Statement
+===============================
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+Example
+Input:
+7
+7 7 7 7 7 7 7
+
+Output: 
+1
+
+Explanation: 
+There are no increasing subsequences (strict or non-strict) longer than one element in the input sequence 7 7 7 7 7 7 7 since all elements are the same (7).
+
+Input format :
+The first line of input contains an integer n, which represents the length of the array.
+
+The second line of input contains n space-separated integers, which are the elements of the array.
+
+Output format :
+The output prints the length of the longest strictly increasing subsequence of the given array.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 100
+
+-104 ≤ Elements of the array ≤ 104
+
+Sample test cases :
+Input 1 :
+7
+7 7 7 7 7 7 7
+Output 1 :
+1
+Input 2 :
+6
+0 1 0 3 2 3
+Output 2 :
+4
+
+==================================
+           Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+int LIS(int nums[],int n){
+    int dp[10000];
+    memset(dp,0,sizeof(dp));
+    for(int i=0;i<n;i++){
+        dp[i]=1;
+        for(int j=0;j<i;j++){
+            if(nums[i] > nums[j] && dp[i]<dp[j]+1){
+                dp[i]=dp[j]+1;
+            }
+        }
+    }
+    int max=0;
+    for(int i=0;i<n;i++){
+        if(dp[i] > max){
+            max = dp[i];
+        }
+    }
+    return max;
+}
+int main(){
+    int n;
+    cin>>n;
+    int nums[n];
+    for(int i=0;i<n;i++){
+        cin>>nums[i];
+    }
+    int res = LIS(nums,n);
+    cout<<res<<endl;
+    return 0;
+}
+
+
+
+
+
