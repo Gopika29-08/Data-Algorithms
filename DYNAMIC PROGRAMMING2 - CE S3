@@ -1,0 +1,170 @@
+Single File Programming Question
+==================================
+      1.Problem Statement
+==================================
+You are given an integer array coins representing coins of different denominations and an integer amount representing a
+total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of 
+money cannot be made up by any combination of the coins, return -1. You may assume that you have an infinite number of each kind of coin.
+
+Example 1
+
+Input: 
+1 2 5
+11
+
+Output: 
+3
+
+Explanation:
+
+11 = 5 + 5 + 1
+
+
+Example 2
+Input: 
+2
+3
+
+Output: 
+-1
+
+Input format :
+The first line of input consists of denominations of coins separated by spaces.
+The second line consists of the amount for which you want to make the change.
+
+Output format :
+The output displays the number of coins needed to make up the given amount.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ coins.length ≤ 12
+
+0 ≤ amount ≤ 104
+
+Sample test cases :
+Input 1 :
+1 2 5
+11
+Output 1 :
+3
+Input 2 :
+1
+0
+Output 2 :
+0
+Input 3 :
+2
+3
+Output 3 :
+-1
+
+
+=================================
+          Program
+=================================
+#include<bits/stdc++.h>
+using namespace std;
+int coinChange(vector<int> &coins,int amount){
+    vector<int> dp(amount+1, INT_MAX);
+    dp[0] =0 ;
+    for(int i=1;i<=amount;i++){
+        for(int coin : coins){
+            if(coin<=i && dp[i-coin]!=INT_MAX){
+                dp[i] = min(dp[i],dp[i-coin]+1);
+            }
+        }
+    }
+    //return (dp[amount]==INT_MAX)? -1 : dp[amount];
+        //(or)      
+    if(dp[amount] == INT_MAX){
+        return -1;
+    }else{
+        return dp[amount];
+    }  
+}
+int main(){
+    string line;
+    getline(cin,line);
+    stringstream ss(line);
+    vector<int> coins;
+    int coin;
+    while(ss>>coin)
+        coins.push_back(coin);
+    int amount;
+    cin>>amount;
+    int change = coinChange(coins,amount);
+    cout<<change<<endl;
+    return 0;
+}
+
+
+Single File Programming Question
+===================================
+        1.Problem Statement
+===================================
+Given an integer array of coins[] of size N representing different types of currency and an integer sum,
+The task is to find the number of ways to make the sum by using different combinations from coins[].  
+
+Note: Assume that you have an infinite supply of each type of coin. 
+
+Input format :
+The first line contains a single integer n, which represents the size of the array.
+The second line contains n space-separated integers, which represent the coins available.
+The third line contains a single integer s, which represents the target sum.
+
+Output format :
+The output consists of a single integer, which represents the number of ways in which the target sum can be achieved using the given coins.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ n ≤ 100 (Number of different coin denominations)
+1 ≤ coins[i] ≤ 1000 (Each coin denomination value)
+1 ≤ s ≤ 1000 (Target sum to be formed)
+
+Sample test cases :
+Input 1 :
+3
+1 2 3
+3
+Output 1 :
+3
+Input 2 :
+3
+1 2 3
+4
+Output 2 :
+4
+
+==================================
+            Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+int coinChange(vector<int>&coins,int target){
+    vector<long long>dp(target+1,0);
+    dp[0]=1;
+    for(int coin : coins)
+    {
+        for(int i=coin;i<=target;i++){
+            dp[i] += dp[i-coin];
+        }
+    }
+    return dp[target];
+}
+int main(){
+    int n;
+    cin>>n;
+    vector<int>coins(n);
+    for(int i=0;i<n;i++){
+        cin>>coins[i];
+    }
+    int target;
+    cin>>target;
+    cout<<coinChange(coins,target)<<endl;
+    return 0;
+}
+
