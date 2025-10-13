@@ -1,0 +1,167 @@
+Single File Programming Question
+==================================
+       1.Problem Statement
+==================================
+Alex is a student at St. Joseph's High School and is working on a project to convert one version of a document
+into another. In order to make the two versions identical, Alex can perform three types of operations: insertion, deletion, and substitution.
+Each operation comes with a cost, and Alex wants to minimize the total cost of transforming the document. The costs of each operation are as follows:
+
+Insertion (adding a character): 3 units of cost
+Deletion (removing a character): 2 units of cost
+Substitution (replacing a character): 5 units of cost
+Alex needs your help to determine the minimum cost required to transform the first document (doc1) into the
+second document (doc2) using a combination of these operations. The goal is to figure out how
+Alex can make the transformation at the lowest possible cost.
+
+Input format :
+The first input is a string doc1, representing the original document.
+
+The second input is a string doc2, representing the target document.
+
+Output format :
+The output should be a single integer, representing the minimum cost required to transform doc1 into doc2.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ string length ≤ 100
+
+Sample test cases :
+Input 1 :
+cat
+rat
+Output 1 :
+5
+Input 2 :
+hello
+world
+Output 2 :
+20
+
+=======================================
+             Program
+=======================================
+#include<bits/stdc++.h>
+using namespace std;
+int minCost(string doc1,string doc2){
+    int n =doc1.size();
+    int m = doc2.size();
+    const int ins =3;
+    const int del = 2;
+    const int subs = 5;
+    vector<vector<int>>dp(n+1, vector<int>(m+1,0));
+    for(int i=0;i<=n;i++)
+        dp[i][0] = i*del;
+    
+    for(int j=0;j<=m;j++)
+        dp[0][j] = j*ins;
+    
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(doc1[i-1]==doc2[j-1]){
+                dp[i][j]=dp[i-1][j-1];
+            }
+            else{
+                int substitute = dp[i-1][j-1]+subs;
+                int insert = dp[i][j-1]+ins;
+                int deletion = dp[i-1][j]+del;
+                dp[i][j] = min(substitute,min(insert,deletion));
+            }
+        }
+    }
+    return dp[n][m];
+}
+int main(){
+    string doc1,doc2;
+    cin>>doc1>>doc2;
+    int cost = minCost(doc1,doc2);
+    cout<<cost<<endl;
+    return 0;
+}
+
+Single File Programming Question
+=================================
+       2.Problem Statement
+=================================
+Olivia is comparing two historical manuscripts, manuscript1 and manuscript2, and wants to determine the minimum
+cost required to transform manuscript1 into manuscript2 by performing a series of operations. 
+These operations can be insertion, deletion, or substitution of characters, each with a specific cost.
+The cost of each operation is given as input. Write a program to calculate the minimum cost of transforming one manuscript into another.
+
+Input format :
+The first line of input contains the string m1, representing manuscript 1.
+The second line of input contains the string m2, representing manuscript 2.
+The third line of input contains three integers representing the costs of the operations: insertion, deletion, and substitution.
+
+Output format :
+The output prints the integer representing the minimum cost required to transform manuscript1 into manuscript2.
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ string length of m1, m2 ≤ 100
+
+Sample test cases :
+Input 1 :
+book
+back
+4
+3
+5
+Output 1 :
+10
+Input 2 :
+history
+mystery
+2
+3
+4
+Output 2 :
+12
+
+==================================
+           Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+int minCost(string m1,string m2,int ins,int del,int subs){
+    int n=m1.size();
+    int m = m2.size();
+    vector<vector<int>>dp(n+1, vector<int>(m+1,0));
+    for(int i=0;i<=n;i++)
+        dp[i][0] = i*del;
+    for(int j=0;j<=m;j++)
+        dp[0][j] = j*ins;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(m1[i-1]==m2[j-1]){
+                dp[i][j] = dp[i-1][j-1];
+            }else{
+                int substitute = dp[i-1][j-1]+subs;
+                int insert = dp[i][j-1]+ins;
+                int deletion = dp[i-1][j]+del;
+                dp[i][j] = min(substitute,min(insert,deletion));
+            }
+        }
+    }
+    return dp[n][m];
+}
+int main(){
+    string m1,m2;
+    getline(cin,m1);
+    getline(cin,m2);
+    int ins;
+    int del;
+    int subs;
+    
+    cin>>ins>>del>>subs;
+    int cost = minCost(m1,m2,ins,del,subs);
+    cout<<cost<<endl;
+    return 0;
+}
+
+
