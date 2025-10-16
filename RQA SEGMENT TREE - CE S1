@@ -1,0 +1,260 @@
+Single File Programming Question
+===================================
+        1.Problem Statement
+===================================
+In a high-tech data center, there are N temperature sensors installed across various zones of a 
+server room. Each sensor continuously records the temperature of its surrounding area.
+Your task is to build a monitoring system that can:
+
+Quickly detect the coldest area in any given segment of sensors.
+Update sensor readings in real time as new data arrives from the network.
+
+The system must support two types of operations:
+
+Query: Given a range of sensor indices [L, R], determine the minimum temperature in that range.
+Update: Given a specific sensor index i, update its temperature reading to a new value val.
+You are required to implement this using a Segment Tree, which allows both querying and updating in logarithmic time.
+
+Input format :
+The first line contains two integers N and Q, representing the number of temperature sensors and the number of monitoring operations.
+The second line contains N space-separated integers representing the initial temperature readings from each sensor.
+The next Q lines each describe an operation:
+"Q L R" Query represents the minimum temperature recorded by the sensors in the range L to R (inclusive).
+"U i val" represents a new reading updates the temperature of sensor i to val.
+All indices are 0-based.
+
+Output format :
+For every "Q L R" operation, the output prints the lowest temperature in the given sensor range on a new line in the order of the queries appearing.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ N ≤ 20
+1 ≤ Q ≤ 20
+1 ≤ arr[i], val ≤ 20
+0 ≤ L ≤ R < N
+0 ≤ i < N
+
+Sample test cases :
+Input 1 :
+5 4
+2 6 1 4 5
+Q 1 3
+U 2 8
+Q 1 3
+Q 0 4
+Output 1 :
+1
+4
+2
+Input 2 :
+6 5
+5 3 8 6 2 7
+Q 0 2
+U 2 1
+Q 0 2
+Q 3 5
+Q 0 5
+Output 2 :
+3
+1
+2
+1
+
+==================================
+            Program
+==================================
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>segTree;
+vector<int>arr;
+void build(int idx, int low, int high){
+    if(low==high){
+        segTree[idx] = arr[low];
+        return;
+    }
+    int mid = (low+high)/2;
+    build(2*idx+1,low,mid);
+    build(2*idx+2,mid+1,high);
+    segTree[idx] = min(segTree[2*idx+1], segTree[2*idx+2]);
+}
+int query(int idx,int low, int high,int l,int r){
+    if(r<low || high<l)
+        return INT_MAX;
+    if(l<=low && high<=r)
+        return segTree[idx];
+    int mid = (low+high)/2;
+    int left = query(2*idx+1, low,mid,l,r);
+    int right = query(2*idx+2,mid+1,high,l,r);
+    return min(left,right);
+}
+void update(int idx,int low,int high,int pos,int val){
+    if(low == high){
+        segTree[idx] = val;
+        return;
+    }
+    int mid = (low+high)/2;
+    if(pos <= mid)
+        update(2*idx+1,low,mid,pos,val);
+    else
+        update(2*idx+2,mid+1,high,pos,val);
+    segTree[idx] = min(segTree[2*idx+1], segTree[2*idx+2]);
+}
+int main(){
+    int n,q;
+    cin>>n>>q;
+    arr.resize(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    segTree.resize(4*n);
+    build(0,0,n-1);
+    while(q--){
+        char type;
+        cin>>type;
+        if(type == 'Q'){
+            int l,r;
+            cin>>l>>r;
+            cout<<query(0,0,n-1,l,r)<<endl;
+        }
+        else if(type == 'U'){
+            int i,val;
+            cin>>i>>val;
+            update(0,0,n-1,i,val);
+        }
+    }
+    return 0;
+}
+
+
+Single File Programming Question
+=================================
+      2.Problem Statement
+=================================
+In the world of TitanCode Arena, N elite players compete on a global leaderboard, where each player has a 
+combat power score. The leaderboard is dynamic: players constantly win battles, gain upgrades, or suffer defeats, causing their power scores to change.
+
+As the system architect, you are responsible for building a real-time leaderboard engine that supports the following operations:
+
+Query: Find the maximum combat power among all players in a given rank range [L, R].
+Update: When a player’s score changes, update it instantly on the leaderboard.
+To handle large numbers of players and frequent operations efficiently, implement the system using a Segment Tree.
+
+Input format :
+The first line contains two integers, N and Q, representing the number of players and the number of operations.
+The second line contains N space-separated integers representing the initial combat power scores of all players, where index 0 is the top-ranked player.
+The next Q lines describe the operations:
+"Q L R" Query represents the maximum combat power from ranks L to R (inclusive).
+"U i val" Updates the power score of the player at rank i to val.
+All indices are 0-based.
+
+Output format :
+For every "Q L R" operation, the output prints the maximum power score in the specified range on a new line in the order of the queries appearing.
+
+Refer to the sample output for the formatting specifications.
+
+Code constraints :
+The given test cases fall under the following constraints:
+
+1 ≤ N ≤ 20
+1 ≤ Q ≤ 20
+1 ≤ arr[i], val ≤ 20
+0 ≤ L ≤ R < N
+0 ≤ i < N
+
+Sample test cases :
+Input 1 :
+6 5
+4 7 2 9 5 1
+Q 1 4
+U 3 6
+Q 1 4
+U 0 10
+Q 0 2
+Output 1 :
+9
+7
+10
+Input 2 :
+7 6
+5 1 9 3 6 8 2
+Q 0 3
+U 1 10
+Q 0 3
+Q 2 5
+U 5 4
+Q 2 5
+Output 2 :
+9
+10
+9
+9
+
+
+================================
+           Program
+================================
+#include<bits/stdc++.h>
+using namespace std;
+vector<int>segTree;
+vector<int>arr;
+void build(int idx, int low,int high){
+    if(low==high){
+        segTree[idx] = arr[low];
+        return;
+    }
+    int mid = (low+high)/2;
+    build(2*idx+1,low,mid);
+    build(2*idx+2,mid+1,high);
+    segTree[idx] = max(segTree[2*idx+1], segTree[2*idx+2]);
+}
+int query(int idx,int low,int high,int l,int r){
+    if(r<low || high<l)
+        return INT_MIN;
+    if(l<=low && high<=r)
+        return segTree[idx];
+    int mid = (low+high)/2;
+    int left = query(2*idx+1, low, mid, l, r);
+    int right = query(2*idx+2,mid+1,high,l,r);
+    return max(left,right);
+}
+void update(int idx,int low,int high,int pos,int val){
+    if(low==high){
+        segTree[idx] = val;
+        return;
+    }
+    int mid = (low+high)/2;
+    if(pos<=mid)
+        update(2*idx+1,low,mid,pos,val);
+    else
+        update(2*idx+2,mid+1,high,pos,val);
+    segTree[idx] = max(segTree[2*idx+1], segTree[2*idx+2]);
+}
+int main(){
+    int n,q;
+    cin>>n>>q;
+    arr.resize(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    segTree.resize(4*n);
+    build(0,0,n-1);
+    while(q--){
+        char type;
+        cin>>type;
+        if(type == 'Q'){
+            int l,r;
+            cin>>l>>r;
+            cout<<query(0,0,n-1,l,r)<<endl;
+        }
+        else if(type == 'U'){
+            int i,val;
+            cin>>i>>val;
+            update(0,0,n-1,i,val);
+        }
+    }
+    return 0;
+}
+
